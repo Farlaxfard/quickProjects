@@ -1,0 +1,312 @@
+/* ==UserStyle==
+@name         Gemini OLED Minimal
+@namespace    local.gemini-oled
+@version      2.0.0
+@description  OLED black + white accent, blurred chat list, hover-to-reveal chat box, collapsed sidebar items, no avatar, animated Plus badge - Vibecoded
+@author       Farlaxfard
+@preprocessor default
+==/UserStyle== */
+
+@-moz-document domain("gemini.google.com") {
+ 
+  /* spring / easing tokens (same as the Claude style) */
+  :root {
+    --ease-spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-spring-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring-snappy: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  }
+ 
+ 
+  /* ================= 1. OLED black everywhere ================= */
+  html, body,
+  bard-sidenav-container, bard-sidenav, bard-sidenav-content,
+  side-navigation-v2, side-navigation-content,
+  chat-app, chat-window, chat-window-content, main.chat-app,
+  .blur-bg, .autosuggest-scrim {
+    background: #000 !important;
+    background-color: #000 !important;
+  }
+ 
+  *, *::before, *::after {
+    --bard-color-sidenav-background-desktop: #000 !important;
+    --bard-color-sidenav-background-mobile: #000 !important;
+    --bard-color-sidenav-tile-background-aurora: #000 !important;
+    --bard-color-footer-background: #000 !important;
+    --bard-color-remy-surface: #000 !important;
+    --bard-color-custom-primary-container: #000 !important;
+    --bard-color-response-container-flipped-background: #000 !important;
+    --bard-color-synthetic--chat-window-surface: #000 !important;
+    --bard-color-synthetic--chat-window-surface-container: #000 !important;
+    --bard-color-synthetic--chat-window-surface-container-high: #000 !important;
+    --bard-color-synthetic--chat-window-surface-container-highest: #000 !important;
+    --bard-color-synthetic--mat-card-background: #000 !important;
+    --bard-color-mode-switcher-container: #0a0a0a !important;
+    --bard-color-bot-power-up-button-background: #0a0a0a !important;
+    --bard-color-draft-chip-background: #0a0a0a !important;
+    --bard-color-zero-state-prompt-chip-background: #0a0a0a !important;
+    --bard-color-input-companion-button-hover-background: #1a1a1a !important;
+    --bard-color-input-companion-button-active-background: #262626 !important;
+    --gem-sys-color--surface: #000 !important;
+    --gem-sys-color--surface-dim: #000 !important;
+    --gem-sys-color--surface-bright: #0a0a0a !important;
+    --gem-sys-color--surface-container-lowest: #000 !important;
+    --gem-sys-color--surface-container-low: #000 !important;
+    --gem-sys-color--surface-container: #000 !important;
+    --gem-sys-color--surface-container-high: #0a0a0a !important;
+    --gem-sys-color--surface-container-highest: #0f0f0f !important;
+    --gem-sys-color--background: #000 !important;
+    --gem-sys-color--scrim: #000 !important;
+    --gem-list-item-background: transparent !important;
+    --gem-menu-item-background: transparent !important;
+ 
+    /* ================= 2. Black / white accent ================= */
+    --gem-sys-color--primary: #fff !important;
+    --gem-sys-color--on-primary: #000 !important;
+    --gem-sys-color--primary-container: #1a1a1a !important;
+    --gem-sys-color--on-primary-container: #fff !important;
+    --gem-sys-color--primary-container-emphasis-1: #262626 !important;
+    --gem-sys-color--primary-container-emphasis-2: #fff !important;
+    --gem-sys-color--primary-emphasis-1: #fff !important;
+    --gem-sys-color--primary-emphasis-2: #e6e6e6 !important;
+    --gem-sys-color--on-primary-emphasis-1: #000 !important;
+    --gem-sys-color--on-primary-container-emphasis-1: #fff !important;
+    --gem-sys-color--primary-fixed: #fff !important;
+    --gem-sys-color--primary-fixed-dim: #d9d9d9 !important;
+    --gem-sys-color--on-primary-fixed: #000 !important;
+    --gem-sys-color--on-primary-fixed-variant: #333 !important;
+    --gem-sys-color--secondary-container: #1a1a1a !important;
+    --gem-sys-color--secondary-container-emphasis-1: #262626 !important;
+    --gem-sys-color--on-secondary-container: #fff !important;
+    --gem-sys-color--on-tertiary-container: #fff !important;
+    --gem-sys-color--inverse-primary: #000 !important;
+    --gem-sys-color--blue-primary: #fff !important;
+    --gem-sys-color--green-primary: #fff !important;
+    --gem-sys-color--orange-primary: #fff !important;
+    --gem-sys-color--purple-primary: #fff !important;
+    --gem-sys-color--red-primary: #fff !important;
+    --bard-color-on-tonal-container: #fff !important;
+    --bard-color-surface-tint: #fff !important;
+    --bard-color-code-chip-background: #1a1a1a !important;
+    --bard-color-code-chip-background-selected: #333 !important;
+  }
+ 
+  ::selection { background: #fff; color: #000; }
+  * { caret-color: #fff; scrollbar-color: #333 #000; }
+ 
+  /* composer: black box, thin border, no shadow */
+  input-area-v2 {
+    background: #000 !important;
+    box-shadow: none !important;
+    border: 1px solid rgba(255, 255, 255, .16) !important;
+  }
+ 
+  /* top/bottom fades are the glow/seam: kill them */
+  .top-gradient, .bottom-gradient { display: none !important; }
+  .gradient-strip { filter: grayscale(1) !important; }
+ 
+  /* ================= 3. Springy blurred chat list ================= */
+  [data-test-id="all-conversations"] a[href^="/app/"] {
+    filter: blur(8px);
+    opacity: 0.5;
+    transform: scale(0.96) translateX(-4px);
+    transform-origin: left center;
+    will-change: transform, filter, opacity;
+    transition: filter 0.4s var(--ease-spring-smooth),
+                opacity 0.4s var(--ease-spring-smooth),
+                transform 0.5s var(--ease-spring-bounce);
+  }
+  /* hover/focus: elastic bounce back */
+  [data-test-id="all-conversations"]:hover a[href^="/app/"],
+  [data-test-id="all-conversations"] a[href^="/app/"]:focus-visible {
+    filter: blur(0px);
+    opacity: 1;
+    transform: scale(1) translateX(0px);
+  }
+  /* individual item pop (must stay after the rule above) */
+  [data-test-id="all-conversations"] a[href^="/app/"]:hover {
+    transform: scale(1.03) translateX(6px);
+    transition: transform 0.35s var(--ease-spring-bounce);
+  }
+ 
+  /* ================= 4. Springy chat box with blur reveal ================= */
+  input-area-v2 {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translateY(20px) scale(0.97);
+    will-change: transform, filter, opacity;
+  }
+  /* Gemini sets its own (important, class-heavy) transition on this element, which made the reveal instant.
+     Two :not(#id) add id-level specificity, so this beats any class-based site rule. */
+  input-area-v2:not(#_a):not(#_b) {
+    transition: opacity 0.4s var(--ease-spring-smooth),
+                filter 0.4s var(--ease-spring-smooth),
+                transform 0.5s var(--ease-spring-bounce) !important;
+  }
+  input-area-v2:hover,
+  input-area-v2:focus-within {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0px) scale(1);
+  }
+ 
+  /* ================= 5. Elastic collapse: Notebooks / Customize / Students / Scheduled / Library =================
+     Collapsed to a chevron handle (where Customize sits). Hover the handle, or any item once open, to
+     expand with a springy, staggered reveal. Leaving collapses after a short grace delay. */
+  gem-nav-list-item:has(a[href="/students"]),
+  gem-nav-list-item:has(a[href="/scheduled"]),
+  gem-nav-list-item:has(a[href="library"]), gem-nav-list-item:has(a[href="/library"]),
+  expandable-section:not([data-test-id="chats-expandable-section"]):not(:has([data-test-id="chats-expandable-section"])):has(button[aria-label="Toggle Notebooks"]) {
+    display: block !important;
+    max-height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    overflow: hidden !important;
+    opacity: 0;
+    filter: blur(6px);
+    transform: scaleY(0.8) translateY(-8px);
+    transform-origin: center top;
+    pointer-events: none;
+    will-change: max-height, transform, filter, opacity;
+    transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.35s,
+                opacity 0.35s var(--ease-spring-smooth) 0.35s,
+                filter 0.35s var(--ease-spring-smooth) 0.35s,
+                transform 0.5s var(--ease-spring-bounce) 0.35s;
+  }
+ 
+  /* the handle row: Customize, shrunk to a chevron */
+  gem-nav-list-item:has(a[href="/customize"]) {
+    display: block !important;
+    max-height: 28px !important;
+    overflow: hidden !important;
+    transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.35s;
+  }
+  a[href="/customize"] {
+    position: relative !important;
+    max-height: 24px !important;
+    overflow: hidden !important;
+    transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.35s;
+  }
+  a[href="/customize"] > * {
+    opacity: 0;
+    filter: blur(4px);
+    transition: opacity 0.35s var(--ease-spring-smooth) 0.35s,
+                filter 0.35s var(--ease-spring-smooth) 0.35s;
+  }
+  a[href="/customize"]::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 7px;
+    height: 7px;
+    margin: -6px 0 0 -4px;
+    border-right: 2px solid rgba(255, 255, 255, .5);
+    border-bottom: 2px solid rgba(255, 255, 255, .5);
+    transform: rotate(45deg) scale(1);
+    pointer-events: none;
+    transition: opacity 0.25s var(--ease-spring-smooth) 0.35s,
+                transform 0.5s var(--ease-spring-bounce) 0.35s,
+                border-color 0.15s ease;
+  }
+  a[href="/customize"]:hover::after {
+    border-color: #fff;
+  }
+ 
+  /* open state: handle or any item hovered */
+  bard-sidenav:has(a[href="/customize"]:hover, a[href="/students"]:hover, a[href="/scheduled"]:hover, a[href="library"]:hover, a[href="/library"]:hover, button[aria-label="Toggle Notebooks"]:hover, a[href^="/notebook"]:hover) :is(
+    gem-nav-list-item:has(a[href="/students"]),
+    gem-nav-list-item:has(a[href="/scheduled"]),
+    gem-nav-list-item:has(a[href="library"]), gem-nav-list-item:has(a[href="/library"])
+  ) {
+    max-height: 56px !important;
+    opacity: 1;
+    filter: blur(0px);
+    transform: scaleY(1) translateY(0px);
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+  bard-sidenav:has(a[href="/customize"]:hover, a[href="/students"]:hover, a[href="/scheduled"]:hover, a[href="library"]:hover, a[href="/library"]:hover, button[aria-label="Toggle Notebooks"]:hover, a[href^="/notebook"]:hover) expandable-section:not([data-test-id="chats-expandable-section"]):not(:has([data-test-id="chats-expandable-section"])):has(button[aria-label="Toggle Notebooks"]) {
+    max-height: 600px !important;
+    opacity: 1;
+    filter: blur(0px);
+    transform: scaleY(1) translateY(0px);
+    pointer-events: auto;
+    transition-delay: 0.15s;
+  }
+  /* stagger: Library -> Scheduled -> Students -> Notebooks */
+  bard-sidenav:has(a[href="/customize"]:hover, a[href="/students"]:hover, a[href="/scheduled"]:hover, a[href="library"]:hover, a[href="/library"]:hover, button[aria-label="Toggle Notebooks"]:hover, a[href^="/notebook"]:hover) :is(gem-nav-list-item:has(a[href="/scheduled"])) { transition-delay: 0.05s; }
+  bard-sidenav:has(a[href="/customize"]:hover, a[href="/students"]:hover, a[href="/scheduled"]:hover, a[href="library"]:hover, a[href="/library"]:hover, button[aria-label="Toggle Notebooks"]:hover, a[href^="/notebook"]:hover) :is(gem-nav-list-item:has(a[href="/students"])) { transition-delay: 0.1s; }
+ 
+  bard-sidenav:has(a[href="/customize"]:hover, a[href="/students"]:hover, a[href="/scheduled"]:hover, a[href="library"]:hover, a[href="/library"]:hover, button[aria-label="Toggle Notebooks"]:hover, a[href^="/notebook"]:hover) gem-nav-list-item:has(a[href="/customize"]) {
+    max-height: 56px !important;
+    transition-delay: 0s;
+  }
+  bard-sidenav:has(a[href="/customize"]:hover, a[href="/students"]:hover, a[href="/scheduled"]:hover, a[href="library"]:hover, a[href="/library"]:hover, button[aria-label="Toggle Notebooks"]:hover, a[href^="/notebook"]:hover) a[href="/customize"] {
+    max-height: 56px !important;
+    transition-delay: 0s;
+  }
+  bard-sidenav:has(a[href="/customize"]:hover, a[href="/students"]:hover, a[href="/scheduled"]:hover, a[href="library"]:hover, a[href="/library"]:hover, button[aria-label="Toggle Notebooks"]:hover, a[href^="/notebook"]:hover) a[href="/customize"] > * {
+    opacity: 1;
+    filter: blur(0px);
+    transition-delay: 0s;
+  }
+  bard-sidenav:has(a[href="/customize"]:hover, a[href="/students"]:hover, a[href="/scheduled"]:hover, a[href="library"]:hover, a[href="/library"]:hover, button[aria-label="Toggle Notebooks"]:hover, a[href^="/notebook"]:hover) a[href="/customize"]::after {
+    opacity: 0;
+    transform: rotate(225deg) scale(0.4);
+    transition-delay: 0s;
+  }
+ 
+  /* ================= 6. Remove profile picture and its space ================= */
+  .mavatar-container {
+    display: none !important;
+  }
+ 
+  /* ================= 7. White Gemini logo ================= */
+  img.sparkle-image {
+    filter: brightness(0) invert(1) !important;
+  }
+  /* unverified: response avatars. Grayscale only, so the shape survives. */
+  bard-avatar, .bard-avatar {
+    filter: grayscale(1) brightness(1.4) !important;
+  }
+ 
+  /* ================= 8. "Plus" badge: Gemini gradient, water flow, glow ================= */
+  .mavatar-tier-label {
+    display: inline-block;
+    font-weight: 600;
+    letter-spacing: .02em;
+    color: transparent !important;
+    -webkit-text-fill-color: transparent;
+    background-image:
+      linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, .85) 50%, transparent 62%),
+      linear-gradient(90deg, #4285f4, #9b72cb, #d96570, #9b72cb, #4285f4) !important;
+    background-size: 260% 100%, 200% 100%;
+    background-repeat: no-repeat, repeat-x;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation:
+      gem-flow 5s linear infinite,
+      gem-glow 3.4s ease-in-out infinite;
+  }
+  /* layer 1 = white sheen sweeping across, layer 2 = gradient flowing like water */
+  @keyframes gem-flow {
+    from { background-position: 130% 50%, 0% 50%; }
+    to   { background-position: -30% 50%, 200% 50%; }
+  }
+  @keyframes gem-glow {
+    0%, 100% {
+      filter: drop-shadow(0 0 5px rgba(66, 133, 244, .9))
+              drop-shadow(0 0 14px rgba(155, 114, 203, .6))
+              drop-shadow(0 0 26px rgba(66, 133, 244, .25));
+    }
+    50% {
+      filter: drop-shadow(0 0 6px rgba(217, 101, 112, .95))
+              drop-shadow(0 0 18px rgba(155, 114, 203, .65))
+              drop-shadow(0 0 30px rgba(217, 101, 112, .28));
+    }
+  }
+}
+ 
+
