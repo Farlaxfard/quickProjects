@@ -1,0 +1,233 @@
+/* ================= 1. OLED black everywhere ================= */
+html,
+body {
+    background: #000 !important;
+}
+
+/* legacy tokens */
+:root,
+:root[data-theme],
+:root[data-mode],
+.dark,
+[data-theme="dark"],
+[data-mode="dark"] {
+    --bg-000: 0 0% 0% !important;
+    --bg-100: 0 0% 0% !important;
+    --bg-200: 0 0% 0% !important;
+    --bg-300: 0 0% 4% !important;
+    --bg-400: 0 0% 8% !important;
+    --bg-500: 0 0% 12% !important;
+    --border-100: 0 0% 100% / 0.10 !important;
+    --border-200: 0 0% 100% / 0.12 !important;
+    --border-300: 0 0% 100% / 0.16 !important;
+    --border-400: 0 0% 100% / 0.22 !important;
+    --text-000: 0 0% 100% !important;
+    --text-100: 0 0% 96% !important;
+    --text-200: 0 0% 82% !important;
+    --text-300: 0 0% 68% !important;
+    --text-400: 0 0% 54% !important;
+    --text-500: 0 0% 44% !important;
+
+    /* Custom Easing Tokens for Bouncy/Spring Mechanics */
+    --ease-spring-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-spring-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring-snappy: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+}
+
+/* current design-system tokens */
+*,
+*::before,
+*::after {
+    --cds-page-bg: #000 !important;
+    --background-color-page: #000 !important;
+    --cds-surface-0: #000 !important;
+    --cds-surface-1: #000 !important;
+    --cds-surface-2: #000 !important;
+    --cds-surface-3: #000 !important;
+    --cds-surface-panel: #000 !important;
+    --cds-bg-editor-canvas: #000 !important;
+    --cds-pinned-bg: #000 !important;
+    --cds-fizzy-lake-color-sidebar: #000 !important;
+    --df-bg-page: #000 !important;
+    --df-sidebar-bg: #000 !important;
+    --df-web-sidebar-bg: #000 !important;
+    --df-web-sidebar-bg-image: none !important;
+    --df-surface-primary: #000 !important;
+    --epitaxy-transcript-surface: #000 !important;
+    --panel-card-surface: #000 !important;
+    --cds-surface-popover: #0d0d0d !important;
+    --cds-tooltip-bg: #0d0d0d !important;
+    --cds-role-tooltip-bg: #0d0d0d !important;
+
+    /* Accent tokens */
+    --cds-fill-accent: #fff !important;
+    --cds-fill-accent-hover: #e6e6e6 !important;
+    --cds-fill-brand: #fff !important;
+    --cds-fill-brand-hover: #e6e6e6 !important;
+    --cds-role-accent-fill: #fff !important;
+    --cds-role-accent-fill-hover: #e6e6e6 !important;
+    --cds-on-accent: #000 !important;
+    --cds-on-brand: #000 !important;
+    --cds-role-accent-on: #000 !important;
+    --cds-text-accent: #fff !important;
+    --cds-border-accent: #555 !important;
+    --cds-bg-accent: #1a1a1a !important;
+    --cds-bg-accent-chip: #1a1a1a !important;
+    --cds-bg-accent-muted: hsl(0 0% 100% / 0.10) !important;
+    --_brand-clay: 0 0% 100% !important;
+    --_brand-clay-emphasized: 0 0% 85% !important;
+    --brand-000: 0 0% 85% !important;
+    --brand-100: 0 0% 100% !important;
+    --brand-200: 0 0% 100% !important;
+    --brand-900: 0 0% 0% !important;
+    --accent-000: 0 0% 100% !important;
+    --accent-100: 0 0% 100% !important;
+    --accent-200: 0 0% 100% !important;
+    --accent-900: 0 0% 12% !important;
+    --accent-brand: 0 0% 100% !important;
+    --accent-main-000: 0 0% 100% !important;
+    --accent-main-100: 0 0% 100% !important;
+    --accent-main-200: 0 0% 92% !important;
+    --accent-main-900: 0 0% 70% !important;
+    --accent-pro-000: 0 0% 100% !important;
+    --accent-pro-100: 0 0% 100% !important;
+    --accent-pro-200: 0 0% 92% !important;
+    --oncolor-100: 0 0% 0% !important;
+    --oncolor-200: 0 0% 0% !important;
+    --oncolor-300: 0 0% 0% !important;
+}
+
+button[class*="bg-accent"],
+a[class*="bg-accent"] {
+    color: #000 !important;
+}
+button[class*="bg-accent"] svg,
+a[class*="bg-accent"] svg {
+    color: #000 !important;
+}
+::selection {
+    background: #fff;
+    color: #000;
+}
+:focus-visible {
+    outline-color: #fff !important;
+}
+* {
+    caret-color: #fff;
+    scrollbar-color: #333 #000;
+}
+
+/* ================= 3. Springy Blur Chat List ================= */
+[data-testid="sidebar-recents"] a[href^="/chat/"] {
+    filter: blur(8px);
+    opacity: 0.5;
+    transform: scale(0.96) translateX(-4px);
+    transform-origin: left center;
+    will-change: transform, filter, opacity;
+    transition: filter 0.4s var(--ease-spring-smooth),
+    opacity 0.4s var(--ease-spring-smooth),
+    transform 0.5s var(--ease-spring-bounce);
+}
+
+/* Hover/Focus state with elastic bounce back */
+[data-testid="sidebar-recents"]:hover a[href^="/chat/"],
+[data-testid="sidebar-recents"] a[href^="/chat/"]:focus-visible {
+    filter: blur(0px);
+    opacity: 1;
+    transform: scale(1) translateX(0px);
+}
+
+/* Individual item pop when directly hovered */
+[data-testid="sidebar-recents"] a[href^="/chat/"]:hover {
+    transform: scale(1.03) translateX(6px);
+    transition: transform 0.35s var(--ease-spring-bounce);
+}
+
+/* ================= 4. Springy Chat Box with Blur Reveal ================= */
+div.sticky.bottom-0:has([data-testid="chat-input"]),
+fieldset:has([data-testid="chat-input"]) {
+    opacity: 0;
+    filter: blur(12px);
+    transform: translateY(20px) scale(0.97);
+    will-change: transform, filter, opacity;
+    transition: opacity 0.4s var(--ease-spring-smooth),
+    filter 0.4s var(--ease-spring-smooth),
+    transform 0.5s var(--ease-spring-bounce);
+}
+
+div.sticky.bottom-0:has([data-testid="chat-input"]):hover,
+div.sticky.bottom-0:has([data-testid="chat-input"]):focus-within,
+fieldset:has([data-testid="chat-input"]):hover,
+fieldset:has([data-testid="chat-input"]):focus-within {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0px) scale(1);
+}
+
+/* Remove glows */
+[data-testid="transcript-bottom-fade"],
+.page-fade-b {
+    display: none !important;
+}
+div.sticky.bottom-0:has([data-testid="chat-input"]),
+div.sticky.bottom-0:has([data-testid="chat-input"]) > *,
+.bg-surface-3:has([data-testid="chat-input"]) {
+    box-shadow: none !important;
+    filter: none !important;
+}
+
+/* ================= 5. Elastic Expand Projects / Artifacts / Customize ================= */
+[data-testid="nav-pin-rows"] > :is( a[href="/projects"], a[href="/artifacts"], a[href="/customize"],
+:has(> a[href="/projects"]), :has(> a[href="/artifacts"]), :has(> a[href="/customize"])) {
+    max-height: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    overflow: hidden !important;
+    opacity: 0;
+    filter: blur(6px);
+    transform: scaleY(0.8) translateY(-8px);
+    transform-origin: center top;
+    pointer-events: none;
+    will-change: max-height, transform, filter, opacity;
+    transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.35s var(--ease-spring-smooth),
+    filter 0.35s var(--ease-spring-smooth),
+    transform 0.5s var(--ease-spring-bounce);
+}
+
+/* Hovering sidebar expands them with bouncy elasticity */
+.dframe-nav-scroll:hover [data-testid="nav-pin-rows"] > :is( a[href="/projects"], a[href="/artifacts"], a[href="/customize"],
+:has(> a[href="/projects"]), :has(> a[href="/artifacts"]), :has(> a[href="/customize"])) {
+    max-height: 52px !important;
+    opacity: 1;
+    filter: blur(0px);
+    transform: scaleY(1) translateY(0px);
+    pointer-events: auto;
+}
+
+/* ================= 6. Remove profile picture and collapse space ================= */
+[data-testid="user-menu-button"] :is(img, [class*="rounded-full"], [class*="avatar" i]),
+[data-testid="user-menu-button"] :has(> img:only-child),
+button[aria-label*="profile" i] img {
+    display: none !important;
+}
+
+/* Remove margins, padding, and width reserved for the icon container */
+[data-testid="user-menu-button"] {
+    padding-left: 0 !important;
+    gap: 0 !important;
+}
+
+[data-testid="user-menu-button"] > *:first-child:has(img, [class*="avatar" i]) {
+    display: none !important;
+    width: 0 !important;
+    margin: 0 !important;
+}
+/* ================= Hide Free Plan / Upgrade Banner ================= */
+[data-testid="user-menu-button"] + div:has(a[href*="/upgrade"]),
+nav div:has(> a[href*="/upgrade"]),
+a[href*="/upgrade"] {
+    display: none !important;
+}
